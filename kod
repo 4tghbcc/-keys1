@@ -1,0 +1,212 @@
+import datetime
+from datetime import date
+
+def get_day_of_week(day, month, year):
+    """Определяет день недели для заданной даты"""
+    try:
+        date_obj = datetime.date(year, month, day)
+        days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+        return days[date_obj.weekday()]
+    except ValueError:
+        return "Некорректная дата"
+
+def is_leap_year(year):
+    """Определяет, является ли год високосным"""
+    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
+
+def calculate_age(birth_day, birth_month, birth_year):
+    """Определяет текущий возраст пользователя"""
+    today = date.today()
+    age = today.year - birth_year
+    
+    # Проверяем, был ли уже день рождения в этом году
+    if today.month < birth_month or (today.month == birth_month and today.day < birth_day):
+        age -= 1
+    
+    return age
+
+def print_digital_display(number, digits):
+    """Выводит число в формате электронного табло"""
+    result = []
+    for i in range(5):  # 5 строк для отображения цифры
+        line = ""
+        for digit in str(number):
+            line += digits[digit][i] + " "
+        result.append(line)
+    return result
+
+def create_digital_date(day, month, year):
+    """Создает цифровое отображение даты в формате дд мм гггг"""
+    # Паттерны для цифр (5 строк высотой)
+    digit_patterns = {
+        '0': [
+            "***",
+            "* *",
+            "* *",
+            "* *",
+            "***"
+        ],
+        '1': [
+            " * ",
+            "** ",
+            " * ",
+            " * ",
+            "***"
+        ],
+        '2': [
+            "***",
+            "  *",
+            "***",
+            "*  ",
+            "***"
+        ],
+        '3': [
+            "***",
+            "  *",
+            "***",
+            "  *",
+            "***"
+        ],
+        '4': [
+            "* *",
+            "* *",
+            "***",
+            "  *",
+            "  *"
+        ],
+        '5': [
+            "***",
+            "*  ",
+            "***",
+            "  *",
+            "***"
+        ],
+        '6': [
+            "***",
+            "*  ",
+            "***",
+            "* *",
+            "***"
+        ],
+        '7': [
+            "***",
+            "  *",
+            "  *",
+            "  *",
+            "  *"
+        ],
+        '8': [
+            "***",
+            "* *",
+            "***",
+            "* *",
+            "***"
+        ],
+        '9': [
+            "***",
+            "* *",
+            "***",
+            "  *",
+            "***"
+        ]
+    }
+    
+    # Форматируем дату: дд мм гггг
+    date_str = f"{day:02d} {month:02d} {year}"
+    
+    # Создаем отображение для всей даты
+    display_lines = ["" for _ in range(5)]
+    
+    for char in date_str:
+        if char == " ":
+            # Добавляем пробел между числами
+            for i in range(5):
+                display_lines[i] += "   "
+        else:
+            # Добавляем цифру
+            pattern = digit_patterns[char]
+            for i in range(5):
+                display_lines[i] += pattern[i] + " "
+    
+    return display_lines
+
+def main():
+    """Основная функция программы"""
+    print("=" * 50)
+    print("ПРОГРАММА ДЛЯ СТИЛИСТИЧЕСКОГО ПРЕОБРАЗОВАНИЯ ЧИСЕЛ")
+    print("=" * 50)
+    
+    try:
+        # Запрашиваем дату рождения у пользователя
+        print("\nВведите дату вашего рождения:")
+        day = int(input("День (1-31): "))
+        month = int(input("Месяц (1-12): "))
+        year = int(input("Год (например, 1990): "))
+        
+        # Проверяем корректность даты
+        birth_date = datetime.date(year, month, day)
+        
+        print("\n" + "=" * 50)
+        print("РЕЗУЛЬТАТЫ:")
+        print("=" * 50)
+        
+        # 1. День недели
+        day_of_week = get_day_of_week(day, month, year)
+        print(f"📅 День недели: {day_of_week}")
+        
+        # 2. Високосный год или нет
+        leap_status = "високосный" if is_leap_year(year) else "не високосный"
+        print(f"📊 Год рождения: {leap_status}")
+        
+        # 3. Возраст пользователя
+        age = calculate_age(day, month, year)
+        print(f"🎂 Ваш возраст: {age} лет")
+        
+        # 4. Вывод даты в формате электронного табло
+        print(f"\n🎯 Дата рождения в формате электронного табло:")
+        print("дд мм гггг")
+        print("-" * 30)
+        
+        digital_date = create_digital_date(day, month, year)
+        for line in digital_date:
+            print(line)
+            
+        print("-" * 30)
+        
+    except ValueError as e:
+        print(f"\n❌ Ошибка: Введена некорректная дата!")
+        print("Пожалуйста, проверьте правильность введенных данных.")
+    except Exception as e:
+        print(f"\n❌ Произошла ошибка: {e}")
+
+# Дополнительная функция для демонстрации работы
+def demonstrate_functions():
+    """Демонстрация работы всех функций"""
+    print("\n" + "=" * 50)
+    print("ДЕМОНСТРАЦИЯ РАБОТЫ ФУНКЦИЙ")
+    print("=" * 50)
+    
+    # Тестовые данные
+    test_dates = [
+        (15, 7, 1990),
+        (29, 2, 2000),  # Високосный год
+        (1, 1, 2020)
+    ]
+    
+    for day, month, year in test_dates:
+        print(f"\nТест для даты: {day:02d}.{month:02d}.{year}")
+        print(f"День недели: {get_day_of_week(day, month, year)}")
+        print(f"Високосный год: {'Да' if is_leap_year(year) else 'Нет'}")
+        print(f"Возраст (сегодня): {calculate_age(day, month, year)} лет")
+        
+        print("Цифровое отображение:")
+        digital_date = create_digital_date(day, month, year)
+        for line in digital_date:
+            print(line)
+        print("-" * 20)
+
+if __name__ == "__main__":
+    main()
+    
+    # Демонстрация работы (можно раскомментировать для тестирования)
+    # demonstrate_functions()
