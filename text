@@ -1,0 +1,10 @@
+
+## Требования
+- Python 3.6+
+- Модуль datetime (входит в стандартную библиотеку Python)
+
+## Установка
+```bash
+git clone https://github.com/your-username/date-transformer.git
+cd date-transformer
+python date_transformer.py
