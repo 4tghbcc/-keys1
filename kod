@@ -2,7 +2,7 @@ import datetime
 from datetime import date
 
 def get_day_of_week(day, month, year):
-    """Определяет день недели для заданной даты"""
+    """Определяет день  недели для заданной даты"""
     try:
         date_obj = datetime.date(year, month, day)
         days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
